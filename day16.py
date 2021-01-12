@@ -22,32 +22,32 @@ with open('input16.txt') as f:
         sue.append(d)
 
 # Part 1
-sel0 = set(range(len(sue)))
-sel1 = sel0.copy()
+good = set(range(len(sue)))
 for k, v in id.items():
-    for i in sel0:
+    bad = set()
+    for i in good:
         if k in sue[i]:
             if sue[i][k] != v:
-                sel1.remove(i)
-    sel0 = sel1.copy()
-print(sel0.pop() + 1)
+                bad.add(i)
+    good -= bad
+print(good.pop() + 1 if len(good) == 1 else good)
 
 # Part 2
-sel0 = set(range(len(sue)))
-sel1 = sel0.copy()
+good = set(range(len(sue)))
 for k, v in id.items():
-    for i in sel0:
+    bad = set()
+    for i in good:
         if k in sue[i]:
             if k == 'cats' or k == 'trees':
                 # must be greater
                 if sue[i][k] <= v:
-                    sel1.remove(i)
+                    bad.add(i)
             elif k == 'pomeranians' or k == 'goldfish':
-                # must be fewer than
+                # must be smaller
                 if sue[i][k] >= v:
-                    sel1.remove(i)
+                    bad.add(i)
             else:
                 if sue[i][k] != v:
-                    sel1.remove(i)
-    sel0 = sel1.copy()
-print(sel0.pop() + 1)
+                    bad.add(i)
+    good -= bad
+print(good.pop() + 1 if len(good) == 1 else good)
