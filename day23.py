@@ -2,7 +2,7 @@ import re
 cmd = re.compile(r'^(\w+) (\w)?(?:, )?((?:\+|-)\d+)?$')
 
 with open('input23.txt') as f:
-    # Subtract 1 from jump (offset) to enable ip++ in every case
+    # Subtract 1 from jump (offset) to enable ip++ for every instruction
     mem = [(i, r, j if j is None else int(j) - 1) for s in f for i, r, j in [cmd.match(s.strip()).groups()]]
 
 def run(a: int) -> int:
