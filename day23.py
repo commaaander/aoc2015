@@ -1,19 +1,15 @@
 import re
-instr = re.compile(r'^(?P<op>[c-t]{3}) (?P<reg>a|b)?(?:, )?(?P<off>(?:\+|-)\d+)?$')
+cmd = re.compile(r'^(\w+) (\w)?(?:, )?((?:\+|-)\d+)?$')
 
-mem = []
 with open('input23.txt') as f:
-    for line in f:
-        if m := instr.match(line.strip()):
-            mem.append(m.groupdict())
-            if mem[-1]['off'] is not None:
-                mem[-1]['off'] = int(mem[-1]['off']) - 1
+    # Subtract 1 from jump (offset) to enable ip++ in every case
+    mem = [(i, r, j if j is None else int(j) - 1) for s in f for i, r, j in [cmd.match(s.strip()).groups()]]
 
-def run(a):
+def run(a: int) -> int:
     reg = {'a': a, 'b': 0}
     ip = 0
     while ip >= 0 and ip < len(mem):
-        i, r, j = mem[ip].values()
+        i, r, j = mem[ip]
         if i == 'inc':
             reg[r] += 1
         elif i == 'hlf':
